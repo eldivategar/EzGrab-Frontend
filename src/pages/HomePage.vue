@@ -20,8 +20,8 @@
                         <p class="text-sm text-gray-500 mb-4">{{ video.author }}</p>
                     </div>
                     <div class="mt-auto">
-                        <a :href="'/download/' + video.video_id"
-                            class="bg-blue-500 text-white px-4 py-2 rounded block text-center hover:bg-blue-600">Download</a>
+                        <button type="button" @click="router.push({ name: 'Download', params: { videoId: video.video_id } })"
+                            class="bg-blue-500 text-white px-4 py-2 rounded block text-center hover:bg-blue-600">Download</button>
                     </div>
                 </div>
             </template>
@@ -56,7 +56,9 @@
 import { ref, onMounted, onUnmounted, watch } from 'vue';
 import axiosInstance from '../plugins/axios';
 import Header from '../components/Header.vue';
+import { useRouter } from 'vue-router';
 
+const router = useRouter();
 const query = ref('');
 const error = ref('');
 const resultQuery = ref([]);
@@ -74,7 +76,7 @@ const searchVideo = async () => {
     
     if (query.value.includes('youtube.com/watch?v=')) {
         const videoId = query.value.split('v=')[1];
-        window.location.href = `/download/${videoId}`;
+        router.push({ name: 'Download', params: { videoId } });
         return;
     }
 
